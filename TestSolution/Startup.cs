@@ -28,6 +28,11 @@ namespace TestSolution
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // use swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", null);
+            });
             // сервис для получения обменного курса
             services.AddSingleton<IExchangeRateService, ExchangeRateService>();
             // хранилище для задач
@@ -43,6 +48,16 @@ namespace TestSolution
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API Solution");
+            });
 
             app.UseMvc();
         }

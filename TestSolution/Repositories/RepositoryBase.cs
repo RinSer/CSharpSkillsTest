@@ -21,6 +21,7 @@ namespace TestSolution.Repositories
         {
             newEntity.Id = _active.Count + _archived.Count + 1;
             newEntity.CreateTime = DateTime.Now;
+            NullFields(newEntity);
 
             _active.Add(newEntity);
 
@@ -44,6 +45,8 @@ namespace TestSolution.Repositories
                 {
                     currentEntity.UpdateTime = DateTime.Now;
                     UpdateMutableFields(currentEntity, updatedEntity);
+
+                    return currentEntity;
                 }
                 else
                 {
@@ -57,9 +60,9 @@ namespace TestSolution.Repositories
                         idx = _archived.IndexOf(currentEntity);
                         _archived[idx] = updatedEntity;
                     }
-                }
 
-                return updatedEntity;
+                    return updatedEntity;
+                }
             }
         }
 
@@ -89,6 +92,12 @@ namespace TestSolution.Repositories
         {
             return _active.FirstOrDefault(e => e.Id == entityId) ??
                 _archived.FirstOrDefault(e => e.Id == entityId);
+        }
+
+        protected virtual void NullFields(TEntity entity)
+        {
+            entity.UpdateTime = null;
+            entity.ArchiveTime = null;
         }
 
         protected abstract void UpdateMutableFields(TEntity oldValue, TEntity newValue);

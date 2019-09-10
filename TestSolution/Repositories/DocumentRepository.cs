@@ -32,6 +32,12 @@ namespace TestSolution.Repositories
             return base.Archive(documentId);
         }
 
+        protected override void NullFields(Document document)
+        {
+            document.FirstReadTime = null;
+            base.NullFields(document);
+        }
+
         protected override void UpdateMutableFields(Document oldDocument, Document newDocument)
         {
             oldDocument.Title = newDocument.Title;
